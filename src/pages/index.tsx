@@ -1,8 +1,10 @@
-import { Button } from '@nextui-org/react';
+import LoginPage from './auth/login';
 
 
-export default function Home() {
+export const Home = () => {
   return (
-   <Button color={'primary'} className=''>start</Button>
-  )
-}
+    <LoginPage/>
+  );
+};
+
+export default Home;
