@@ -2,6 +2,7 @@
 
 body{
   font-family: 'Poppins', sans-serif;
+  background-color: #fff !important;
 }
 
 .bgLogin{
@@ -32,4 +33,67 @@ body{
   z-index: 99999;
   opacity: 0.8;
   background: #f8f8ffc7;
+}
+
+.nextui-navbar-container{
+  background: #090446 !important;
+  color: white;
+}
+
+.nextui-c-cAbbLF-ikgtVxo-css{
+  background-color: rgb(9, 4, 70) !important;
+}
+
+
+@media (max-width: 700px) {
+  .responsiveLogin{
+    display: grid;
+    grid-template-columns: 100%;  
+  }
+
+  .responsiveRegister{
+    display: block;
+    grid-template-columns: 100% !important;  
+  }
+
+  .noneLogin{
+    display: none;
+  }
+
+  .marginNone{
+    margin-left: auto !important
+  }
+  
+  .marginRightNone{
+    margin-right: auto !important
+  }
+}
+
+@media (max-width: 1500px) {
+  .topLogin{
+    top: 170px !important
+  }
+}
+
+@media (min-width: 701px) {
+
+  .responsiveLogin{
+    display: grid;
+    grid-template-columns: 40% 60%;  
+  }
+  
+  .responsiveRegister{
+    display: grid;
+    grid-template-columns: 60% 40%;  
+  }
+
+  .noneLogin{
+    display: block;
+  }
+
+  .marginNone{
+    margin-left: auto !important
+  }
+  
+  
 }

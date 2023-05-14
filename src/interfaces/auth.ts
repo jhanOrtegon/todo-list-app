@@ -4,10 +4,10 @@ export const AuthInitialState = {
   email: '',
   photoURL: '',
   errorMessage: '',
-  status: 'checking'
+  status: 'not-authenticated'
 };
 
-export type IAuthState = 'checking' | 'not-authenticated' | 'authenticated'
+export type IAuthState =  'not-authenticated' | 'authenticated'
 
 export interface IAuth {
   uid: string ,

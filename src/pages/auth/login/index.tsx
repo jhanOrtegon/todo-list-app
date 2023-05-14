@@ -3,8 +3,9 @@ import { IconGoogle } from '@/components/svg';
 import { Loading, message } from '@/components/ui';
 import { loginWithEmailPassword, singInWithGoogle } from '@/firebase';
 import { validateEmail } from '@/helpers';
-import { useAppDispatch, useForm, useGetStore } from '@/hooks';
+import { useAppDispatch, useCheckAuth, useForm, useGetStore } from '@/hooks';
 import { finishLoading, login, startLoading } from '@/redux/slices';
+import { loadTodos } from '@/thunks';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
@@ -14,8 +15,9 @@ export const LoginPage = () => {
 
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { ui, auth } = useGetStore();
-  
+  const { ui } = useGetStore();
+  const { status:statusAuth } = useCheckAuth();
+
   const [touch, setTouch] = useState({
     password: false,
     validateEmail: false
@@ -33,6 +35,8 @@ export const LoginPage = () => {
 
     if(ok){
 
+      router.push('/home');
+
       dispatch(login({
         displayName:(displayName as string), 
         email: (email as string),
@@ -40,9 +44,10 @@ export const LoginPage = () => {
         uid: (uid as string), 
         status:'authenticated', 
       }));
-      dispatch(finishLoading());
-      router.push('/home');
 
+      dispatch(loadTodos(uid));
+
+      dispatch(finishLoading());
       return;
     } 
 
@@ -56,6 +61,9 @@ export const LoginPage = () => {
     const { ok, displayName, errorMessage, photoURL, uid } = await loginWithEmailPassword({email, password});
 
     if(ok){
+      
+      dispatch(loadTodos(uid));
+      
       dispatch(login({
         displayName:(displayName as string), 
         email: (email as string),
@@ -76,28 +84,26 @@ export const LoginPage = () => {
     message({message:`Error al ingresar, ${errorMessage}` , type:'error'});
   };
 
+
   useEffect(()=>{
-    if(auth.status === 'authenticated'){
+    if(statusAuth === 'authenticated'){
       router.push('/home'); 
     }
-  },[auth.status, router]);
+  },[statusAuth, router]);
 
   return (
     <>
       <Loading isLoading={ui.isLoading} />
 
-      <div
-        style={{display:'grid', gridTemplateColumns:'40% 60%'}}
-        className='h-screen overflow-hidden bg-primary-gray'
-      >
+      <div className='h-screen overflow-hidden bg-primary-gray responsiveLogin'>
       
-        <div className='relative bgLogin'>
+        <div className='relative bgLogin noneLogin'>
           <img src={'/images/Ellipse_left.png'} alt='images/Ellipse_left.png' className='h-screen w-full' />
-          <img src={'/images/starLogin.png'} alt='starLogin' className='absolute left-0  w-3/4 ' id='starLogin' />
-          <img src={'/images/endLogin.png'} alt='endLogin' className='absolute left-0  w-3/4 hidden' id='endLogin' />
+          <img src={'/images/starLogin.png'} alt='starLogin' className='absolute left-0  w-3/4 topLogin' id='starLogin' />
+          <img src={'/images/endLogin.png'} alt='endLogin' className='absolute left-0  w-3/4 hidden topLogin' id='endLogin' />
         </div>
 
-        <div style={{margin:'10vh auto 20vh 100px', maxWidth:'90%', minWidth:'70%'}}>
+        <div className='marginNone' style={{margin:'10vh auto 20vh 100px', maxWidth:'90%', minWidth:'70%'}}>
           <h1 className='text-primary-darkBlue m-0 ml-2'>Bienvenido</h1>
           <h5 className='text-primary-darkBlue ml-3 font-medium'>Inicia sesión para continuar tu progreso</h5>
 
@@ -154,8 +160,8 @@ export const LoginPage = () => {
             <Button 
               size={'xl'} 
               css={{width:'100%'}} 
-              className={password.length > 5 && touch.validateEmail ? 'bg-primary-darkBlue' : ''}
-              disabled={!password.length || !touch.validateEmail}
+              className={statusAuth !== 'authenticated' || password.length > 5 && touch.validateEmail ? 'bg-primary-darkBlue' : ''}
+              disabled={statusAuth === 'authenticated' || password.length <= 5 || !touch.validateEmail }
               onPress={onLoginWithUserAndPassword} 
             >
               Ingresar
@@ -167,7 +173,8 @@ export const LoginPage = () => {
               size={'xl'} 
               css={{width:'100%'}} 
               color={'error'} 
-              onPress={onLoginWithGoogle} 
+              onPress={onLoginWithGoogle}
+              disabled={statusAuth === 'authenticated'}
             >
               oogle
             </Button>

@@ -1,18 +1,18 @@
-import { IAuth, IUi,  } from '@/interfaces';
+import { IAuth, ITodoList, IUi,  } from '@/interfaces';
 import { configureStore } from '@reduxjs/toolkit';
-import { authSlice, uiSlice } from './slices';
+import { authSlice, todoSlice, uiSlice } from './slices';
 
 export interface IAppStore {
     ui: IUi,
     auth: IAuth
-    // todo: {},
+    todos: ITodoList,
 }
 
 export const store = configureStore({
   reducer:{
     auth: authSlice.reducer,
     ui: uiSlice.reducer,
-    // todo: todoSlice.reducer,
+    todos: todoSlice.reducer,
   }
 });
 

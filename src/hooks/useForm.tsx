@@ -8,9 +8,11 @@ export function useForm<T> (initialValues:T) {
   const onChange = ({ target }: ChangeEvent<FormElement>) => {
     setValues(state => ({
       ...state,
-      [target.name]: target.value.trim()
+      [target.name]: target.value.trimStart()
     }));
   };
 
-  return { onChange, ...values};
+  const resetForm = () => setValues(initialValues);
+
+  return { onChange, ...values , resetForm, setValues};
 };

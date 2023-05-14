@@ -2,11 +2,11 @@
 import { Loading, message } from '@/components/ui';
 import { registerUserWithEmailPassword } from '@/firebase';
 import { validateEmail } from '@/helpers';
-import { useAppDispatch, useForm, useGetStore } from '@/hooks';
+import { useAppDispatch, useCheckAuth, useForm, useGetStore } from '@/hooks';
 import { finishLoading, login, startLoading } from '@/redux/slices';
 import { Button, Input, Spacer } from '@nextui-org/react';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoIosArrowDropleft } from 'react-icons/io';
 import { ToastContainer } from 'react-toastify';
 
@@ -14,6 +14,8 @@ export const RegisterPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { ui } = useGetStore();
+  const { status:statusAuth } = useCheckAuth();
+
   const [touch, setTouch] = useState({
     user: false,
     password: false,
@@ -58,16 +60,22 @@ export const RegisterPage = () => {
 
   };
 
+  useEffect(()=>{
+    if(statusAuth === 'authenticated'){
+      router.push('/home'); 
+    }
+  },[statusAuth, router]);
+
   return (
     <>
       <Loading isLoading={ui.isLoading} />
 
       <div 
         style={{display:'grid', gridTemplateColumns:'60% 40%'}}
-        className='h-screen overflow-hidden bg-primary-gray'
+        className='h-screen overflow-hidden bg-primary-gray responsiveRegister'
       >
      
-        <div style={{margin:'10vh 100px 20vh auto', maxWidth:'90%', minWidth:'70%'}}>
+        <div className='marginRightNone' style={{margin:'10vh 100px 20vh auto', maxWidth:'90%', minWidth:'70%'}}>
           <h1 className='text-primary-darkBlue m-0 ml-2'>Regístrate</h1>
           <h5 className='text-primary-darkBlue ml-3 font-medium'>Comienza tu viaje con nosotros hoy</h5>
 
@@ -128,9 +136,10 @@ export const RegisterPage = () => {
 
             <div className='flex gap-3'>
               <Button 
+                disabled={statusAuth === 'authenticated' || password.length <= 5 || !user.length || !touch.validateEmail}
                 icon={<IoIosArrowDropleft size={40} />} 
                 size={'xl'} color={'error'} 
-                css={{width:'50%'}}
+                auto
                 onClick={()=>{
                   router.push('/auth/login');
                 }}
@@ -140,9 +149,9 @@ export const RegisterPage = () => {
             
               <Button 
                 size={'xl'} 
-                css={{width:'100%'}} 
-                disabled={password.length <= 5 || !user.length || !touch.validateEmail}
-                className={password.length > 5 && user.length && touch.validateEmail ? 'bg-primary-darkBlue' : ''}
+                auto
+                disabled={statusAuth === 'authenticated' || password.length <= 5 || !user.length || !touch.validateEmail}
+                className={statusAuth !== 'authenticated' || password.length > 5 && user.length && touch.validateEmail ? 'bg-primary-darkBlue' : ''}
                 onPress={onRegisterWithUserAndPassword}
               >
                 Guardar
@@ -152,10 +161,10 @@ export const RegisterPage = () => {
           </div>
         </div>
 
-        <div className='relative bgLogin'>
+        <div className='relative bgLogin noneLogin'>
           <img src={'/images/Ellipse_right.png'} alt='images/Ellipse_right.png' className='h-screen w-full' />
-          <img src={'/images/startRegister.png'} alt='starRegister' className='absolute right-0 top-16  w-3/4 ' id='starRegister' />
-          <img src={'/images/endRegister.png'} alt='endRegister' className='absolute right-0 top-16  w-3/4 hidden' id='endRegister' />
+          <img src={'/images/startRegister.png'} alt='starRegister' className='absolute right-0 top-16  w-3/4 topLogin' id='starRegister' />
+          <img src={'/images/endRegister.png'} alt='endRegister' className='absolute right-0 top-16  w-3/4 hidden topLogin' id='endRegister' />
         </div>
 
         <ToastContainer />

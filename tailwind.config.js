@@ -9,7 +9,9 @@ module.exports = {
     colors: {
       primary:{
         'gray': '#fff',
-        'darkBlue': '#090446'
+        'darkGray': '#808080',
+        'darkBlue': '#090446',
+        'success': '#17C964',
       }
     },
     extend: {

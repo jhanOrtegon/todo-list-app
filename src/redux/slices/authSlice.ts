@@ -13,20 +13,18 @@ export const authSlice = createSlice({
       state.photoURL = payload.photoURL;
       state.errorMessage = '';
     },
-    logout: ( state, { payload }:PayloadAction<IAuth> ) => {
+    logout: ( state ) => {
       state.status = 'not-authenticated',
       state.uid = '';
       state.email = '';
       state.displayName = '';
       state.photoURL = '';
-      state.errorMessage = payload?.errorMessage as string;
+      // state.errorMessage = payload?.errorMessage as string;
     },
-    checkingCredentials: (state) => {
-      state.status = 'checking';
-    }
+
   }
 });
 
 // STATUS
-// 'checking', 'not-authenticated', 'authenticated'
-export const { login, logout, checkingCredentials } = authSlice.actions;
+// 'not-authenticated', 'authenticated'
+export const { login, logout } = authSlice.actions;
