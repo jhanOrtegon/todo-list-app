@@ -58,7 +58,7 @@ const HomePage = () => {
     { name: 'ACTIONS', uid: 'actions' },
   ];
   
-  const renderCell = (todo: ITodo, columnKey:React.Key) => {
+  const renderCell = (todo: any, columnKey:any) => {
     const cellValue = todo[columnKey];
     switch (columnKey) {
     case 'category':

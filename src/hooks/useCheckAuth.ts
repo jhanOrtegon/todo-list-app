@@ -31,6 +31,7 @@ export const useCheckAuth = () => {
 
     });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {status};
