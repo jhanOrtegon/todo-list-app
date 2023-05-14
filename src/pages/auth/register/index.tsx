@@ -72,7 +72,7 @@ export const RegisterPage = () => {
 
       <div 
         style={{display:'grid', gridTemplateColumns:'60% 40%'}}
-        className='h-screen overflow-hidden bg-primary-gray responsiveRegister'
+        className='h-screen overflow-scroll md:overflow-hidden bg-primary-gray responsiveRegister'
       >
      
         <div className='marginRightNone' style={{margin:'10vh 100px 20vh auto', maxWidth:'90%', minWidth:'70%'}}>

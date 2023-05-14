@@ -61,11 +61,13 @@ body{
   }
 
   .marginNone{
-    margin-left: auto !important
+    margin-left: auto !important;
+    margin-top: 2vh !important
   }
   
   .marginRightNone{
-    margin-right: auto !important
+    margin-right: auto !important;
+    margin-top: 2vh !important
   }
 }
 

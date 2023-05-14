@@ -65,7 +65,7 @@ export const LayoutHome:NextPage<ILayoutHome> = ({children, isLoading}) => {
         </Navbar.Content>
       </Navbar>
 
-      <Container xl style={{maxWidth:'1400px'}} css={{height:'80vh', marginTop:'4vh'}}>
+      <Container xl style={{maxWidth:'1400px'}} css={{height:'auto', marginTop:'4vh', marginBottom:'40px'}}>
         {children}
       </Container>
     </>

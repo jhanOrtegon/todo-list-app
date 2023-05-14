@@ -308,7 +308,7 @@ const HomePage = () => {
                   </div>
                 </section>
 
-                <section className='mt-5'>
+                <section className='my-6'>
                   { todos.todos.length ? (
                     <Table
                       shadow
